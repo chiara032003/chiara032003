@@ -1,0 +1,105 @@
+---
+title: "<span style='font-size:48px;'>Master's Thesis</span>"
+output: html_document
+date: "<span style='font-size:48px;'>2025-12-01</span>"
+---
+
+# <span style="color:red; font-style:italic; font-size:36px;">Hybrid warfare and information warfare: The penetration of Russian disinformation campaigns into the French media landscape since the start of the war in Ukraine</span>
+
+Author: Motard Chiara
+
+
+---
+
+# **<u>1. General Framework</u>**
+
+## Research question
+What factors influence the uptake of Russian disinformation campaigns by traditional French media since the start of the war in Ukraine?
+
+## Theoretical Framework
+• On hybrid warfare: Frank G. Hoffman, *Conflict in the 21st Century: The Rise of Hybrid Wars* (Arlington, VA: Potomac Institute for Policy Studies, December 2007). Theorization of hybrid warfare.  
+
+• On economics of information and attention: Stigler (1961) / H. Simon (1971). Limited rationality and scarce attention in an information-saturated world make newspapers more prone to disseminating disinformation.
+
+## Hypothesis
+H1: Following the ban on official Russian media in France, the information strategy of hybrid warfare has adapted by devising disinformation campaigns whose subjects and frameworks are salient, sensational, and embedded in already polarised and conflictual contexts. This configuration maximises the likelihood of unintentional repetition by the traditional French press.  
+
+H2: The structure of traditional media, privatised and embedded in a market economy dominated by the attention economy, creates incentives to favour attractive content, which increases the likelihood of Russian disinformation campaigns being reposted.  
+
+H2a: Media outlets with extreme political leanings are particularly prone to reposting Russian disinformation campaigns, as their ideological biases reinforce the selection of polarising and sensationalist content.  
+
+H2b: Media outlets characterised by a high publication rate are more likely to disseminate Russian disinformation, as attention and time pressures reduce their ability to verify and filter content.  
+
+---
+
+# **<u>2. Operational framework</u>**
+
+## Tools used for scientific research
+• Tool 1 (Google Scholar): A first step in scientific research. Allowed me to find pioneering works.  
+
+• Tool 2 (Zotero): Organization of sources and citations.  
+
+• Justification: These tools enabled me to identify relevant articles and systematically organize them.  
+
+• Tool 3: Eureka, Mediacloud and Factiva to extract articles and collect data.  
+
+## Methodology
+This research uses a mixed-method approach:  
+
+• Qualitative analysis: Examines how disinformation is relayed, framed, or corrected in articles.  
+
+• Quantitative analysis: Measures frequency and distribution of disinformation campaigns across media.  
+
+**Corpus & Selection Criteria:**  
+• French print media (5–15 titles), from Feb 24, 2022 to present, selected by political orientation, audience size, type (daily/weekly, paid/free), and diversity (generalist vs specialized).  
+
+• Russian disinformation campaigns (5–10), identified via official sources (VIGINUM, EUvsDisinfo).  
+
+---
+
+# **<u>3. Analysis and data visualisation</u>**
+I chose the R programming language, using RStudio software, to analyze my data. In particular, I selected the `tidyverse` and `ggplot2` packages.  
+
+---
+
+# **<u>4. Discussion: Justification of Tool Choices</u>**
+The tools selected—Medialoud, RStudio, Factiva, Eureka, Zotero, and Google Scholar—were chosen based on accessibility, transparency, and adaptability to the research needs. Medialoud and the press databases (Factiva, Eureka) ensured comprehensive and reliable media coverage, while RStudio provided flexibility and replicability for quantitative analysis, supported by its strong academic community. Zotero facilitated rigorous reference management, and Google Scholar offered accessible, cross-disciplinary literature. Overall, these choices reflect a commitment to methodological transparency.  
+
+## Analyse
+
+```{r analyse, echo=TRUE}
+# Charger le package
+library(tidyverse)
+
+# Créer le tableau
+data <- tibble(
+  Source = c("La Provence", "La République du Centre", "La Nouvelle République du Centre-Ouest",
+             "La Nouvelle République du Centre-Ouest", "Le Maine Libre", "Ouest-France",
+             "L'Yonne Républicaine", "Le Parisien", "Le Parisien", "Les Echos",
+             "La Dépêche du Midi", "La Dépêche du Midi", "La Voix du Nord",
+             "Le Progrès (Lyon)", "La Nouvelle République Dimanche"),
+  Periodicite = c("Quotidien","Quotidien","Quotidien","Quotidien","Quotidien","Quotidien",
+                  "Quotidien","Quotidien","Quotidien","Quotidien","Quotidien","Quotidien",
+                  "Quotidien","Quotidien","Hebdomadaire"),
+  Date = c("30-11-2025","29-11-2025","29-11-2025","25-11-2025","29-11-2025","29-11-2025",
+           "29-11-2025","29-11-2025","12-11-2025","27-11-2025","16-11-2025","11-11-2025",
+           "08-11-2025","04-11-2025","16-11-2025")
+)
+
+# Résumé par périodicité
+summary <- data %>%
+  group_by(Periodicite) %>%
+  summarise(Nb_Articles = n())
+
+# Graphique ggplot2
+ggplot(summary, aes(x = Periodicite, y = Nb_Articles, fill = Periodicite)) +
+  geom_col(width = 0.6) +
+  labs(title = "Occurrences du terme 'punaises de lit' par périodicité",
+       x = "Périodicité", y = "Nombre d'articles") +
+  theme_minimal(base_size = 14) +
+  scale_fill_manual(values = c("Quotidien" = "#2C7FB8", "Hebdomadaire" = "#41AB5D")) +
+  geom_text(aes(label = Nb_Articles), vjust = -0.5, size = 5)
+```
+
+
+
